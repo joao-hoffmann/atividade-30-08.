@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manipulação de Classes</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        .box {
+            width: 100px;
+            height: 100px;
+            transition: background-color 0.3s;
+        }
+        .red { background-color: red; }
+        .blue { background-color: blue; }
+        .green { background-color: green; }
+        .yellow { background-color: yellow; }
+        .purple { background-color: purple; }
+        .orange { background-color: orange; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="box1" class="box red"></div>
+        <div id="box2" class="box blue"></div>
+        <div id="box3" class="box green"></div>
+    </div>
+    <button id="changeColors">Trocar Cores</button>
+
+    <script>
+        function changeColors() {
+            const box1 = document.getElementById('box1');
+            const box2 = document.getElementById('box2');
+            const box3 = document.getElementById('box3');
+            
+            box1.classList.add('yellow');
+            
+            box2.classList.remove('blue');
+            box2.classList.add('purple');
+            
+            box3.classList.toggle('orange');
+        }
+
+        document.getElementById('changeColors').addEventListener('click', changeColors);
+    </script>
+</body>
+</html>

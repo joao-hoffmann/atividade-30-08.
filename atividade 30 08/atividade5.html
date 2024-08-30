@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Adivinhação</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Jogo de Adivinhação</h1>
+        <p>Advinhe um número entre 1 e 100</p>
+        <input type="number" id="guess" min="1" max="100" placeholder="Seu palpite">
+        <button id="submit">Enviar Palpite</button>
+        <div id="message" class="message"></div>
+        <button id="restart" style="display: none;">Jogar Novamente</button>
+    </div>
+
+    <script>
+        function generateRandomNumber() {
+            return Math.floor(Math.random() * 100) + 1;
+        }
+
+        let randomNumber = generateRandomNumber();
+        const submitButton = document.getElementById('submit');
+        const restartButton = document.getElementById('restart');
+        const messageDiv = document.getElementById('message');
+
+        function handleGuess() {
+            const guessInput = document.getElementById('guess');
+            const guess = parseInt(guessInput.value);
+
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                messageDiv.textContent = 'Por favor, insira um número entre 1 e 100.';
+                return;
+            }
+
+            if (guess < randomNumber) {
+                messageDiv.textContent = 'Muito baixo! Tente novamente.';
+            } else if (guess > randomNumber) {
+                messageDiv.textContent = 'Muito alto! Tente novamente.';
+            } else {
+                messageDiv.textContent = 'Parabéns! Você acertou!';
+                restartButton.style.display = 'block';
+                submitButton.style.display = 'none';
+            }
+        }
+
+        function restartGame() {
+            randomNumber = generateRandomNumber();
+            document.getElementById('guess').value = '';
+            messageDiv.textContent = '';
+            restartButton.style.display = 'none';
+            submitButton.style.display = 'block';
+        }
+
+        submitButton.addEventListener('click', handleGuess);
+        restartButton.addEventListener('click', restartGame);
+    </script>
+</body>
+</html>

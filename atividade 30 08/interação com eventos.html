@@ -1,0 +1,44 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interação com Eventos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Exemplo de Interação com Eventos</h1>
+    <input type="text" id="textInput" placeholder="Digite algo aqui">
+    <button id="myButton">Enviar</button>
+    <div id="message"></div>
+
+    <script>
+        const button = document.getElementById('myButton');
+        
+        const textInput = document.getElementById('textInput');
+        
+        const messageDiv = document.getElementById('message');
+        
+        function handleClick() {
+            const inputText = textInput.value;
+            
+            if (inputText === '') {
+                messageDiv.textContent = 'Você não digitou nada.';
+            } else if (inputText.length < 5) {
+                messageDiv.textContent = 'Você digitou menos de 5 caracteres.';
+            } else {
+                messageDiv.textContent = `Você digitou: "${inputText}".`;
+            }
+        }
+      button.addEventListener('click', handleClick);
+    </script>
+</body>
+</html>

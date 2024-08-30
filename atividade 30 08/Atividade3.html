@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .todo-list {
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            cursor: pointer;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            background-color: #007bff;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .task {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .task.completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .task button {
+            background-color: #dc3545;
+        }
+        .task button:hover {
+            background-color: #c82333;
+        }
+        .task .complete-button {
+            background-color: #28a745;
+        }
+        .task .complete-button:hover {
+            background-color: #218838;
+        }
+        #taskList {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="todo-list">
+        <h1>Lista de Tarefas</h1>
+        <input type="text" id="taskInput" placeholder="Digite uma nova tarefa">
+        <button id="addTaskButton">Adicionar Tarefa</button>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskInput = document.getElementById('taskInput');
+            const addTaskButton = document.getElementById('addTaskButton');
+            const taskList = document.getElementById('taskList');
+
+            function loadTasks() {
+                const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+                tasks.forEach(task => {
+                    createTaskElement(task.text, task.completed);
+                });
+            }
+
+            function saveTasks() {
+                const tasks = [];
+                document.querySelectorAll('.task').forEach(taskElement => {
+                    tasks.push({
+                        text: taskElement.querySelector('.task-text').textContent,
+                        completed: taskElement.classList.contains('completed')
+                    });
+                });
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+            }
+
+            function createTaskElement(text, completed = false) {
+                const li = document.createElement('li');
+                li.className = `task ${completed ? 'completed' : ''}`;
+
+                const span = document.createElement('span');
+                span.className = 'task-text';
+                span.textContent = text;
+
+                const completeButton = document.createElement('button');
+                completeButton.className = 'complete-button';
+                completeButton.textContent = 'Concluir';
+                completeButton.addEventListener('click', () => {
+                    li.classList.toggle('completed');
+                    saveTasks();
+                });
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Excluir';
+                deleteButton.addEventListener('click', () => {
+                    li.remove();
+                    saveTasks();
+                });
+
+                li.appendChild(span);
+                li.appendChild(completeButton);
+                li.appendChild(deleteButton);
+                taskList.appendChild(li);
+            }
+
+            addTaskButton.addEventListener('click', () => {
+                const taskText = taskInput.value.trim();
+                if (taskText) {
+                    createTaskElement(taskText);
+                    taskInput.value = '';
+                    saveTasks();
+                }
+            });
+
+            loadTasks();
+        });
+    </script>
+</body>
+</html>
+Explicação do Código
